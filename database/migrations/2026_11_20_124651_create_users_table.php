@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('status', ['pending', 'active', 'banned', 'deleted'])->default('pending')->after('email');
+            $table->enum('status', ['pending', 'active', 'banned', 'deleted'])->default('pending');
             $table->string('phone_number')->nullable();
             $table->string('avatar')->nullable();
             $table->text('address')->nullable();
