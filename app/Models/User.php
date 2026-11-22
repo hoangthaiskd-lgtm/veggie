@@ -1,32 +1,47 @@
 <?php
-
 namespace App\Models;
+use Illuminate\Database\Eloquent\Model;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+class User extends Model {
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'status',
+        'phone_number',
+        'avatar',
+        'address',
+        'role_id',
+        'activation_token',
+        'google_id'
+    ];
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
-{
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    public function role() {
+        return $this->belongsTo(Role::class);
+    }
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+    public function reviews() {
+        return $this->hasMany(Review::class);
+    }
+
+    public function shippingAddresses() {
+        return $this->hasMany(ShippingAddress::class);
+    }
+
+    // Check status
+    public function isPending() {
+        return $this->status === 'pending';
+    }
+
+    public function isActive() {
+        return $this->status === 'active';
+    }
+
+    public function isBanned() {
+        return $this->status === 'banned';
+    }
+
+    public function isDeleted() {
+        return $this->status === 'deleted';
     }
 }
