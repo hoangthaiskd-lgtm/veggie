@@ -1,0 +1,1 @@
+@include('clients.partials.utilize_mobile')
